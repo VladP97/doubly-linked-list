@@ -23,11 +23,11 @@ class LinkedList {
     }
 
     head() {
-
+        return this._head.data;
     }
 
     tail() {
-
+        return this._tail.data;
     }
 
     at(index) {
@@ -64,13 +64,57 @@ clear() {
 }
 
 deleteAt(index) {
+    var node = this._head;
+    var befNode;
+    var delNode;
+    var aftNode;
+    if (index == 0) {
+        this._head = node.next;
+        if (!this._head) {
+            this._head.prev = null;
+            return;
+        } else {
+            this._tail = null;
+            return;
+        }
+    }
+    if (index == this._length - 1) {
+        this._tail = this._tail.prev;
+        this._tail.next = null;
+        return;
+    }
+    for (var i = 0; i < this._length; i++) {
 
+        if (i == index) {
+            befNode = node.prev;
+            delNode = node;
+            aftNode = node.next;
+            befNode.next = aftNode;
+            aftNode.prev = befNode;
+            this._length--;
+            return;
+        }
+        node = node.next;
+    }
 }
 
-reverse() {}
+reverse() {
+    var node = this._tail;
+    var prevLength = this._length;
+    for (var i = 0; i < prevLength; i++) {
+        this.append(node.data);
+        node = node.prev;
+        this.deleteAt((-(i - prevLength)) - 1);
+    }
+}
 
 indexOf(data) {
-
+    var node = this._head;
+    for (var i = 0; i < this._length; i++) {
+        if (data == node.data) return i;
+        node = node.next;
+    }
+    return -1;
 }
 }
 
