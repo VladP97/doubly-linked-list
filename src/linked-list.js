@@ -2,14 +2,14 @@ const Node = require('./node');
 
 class LinkedList {
     constructor() {
-        this._length = 0;
+        this.length = 0;
         this._head = null;
         this._tail = null;
     }
 
     append(data) {
         var node = new Node(data);
-        if (this._length != 0) {
+        if (this.length != 0) {
             this._tail.next = node;
             node.prev = this._tail;
             this._tail = node;
@@ -17,7 +17,7 @@ class LinkedList {
             this._head = node;
             this._tail = node;
         }
-        this._length++;
+        this.length++;
 
         return node;
     }
@@ -32,90 +32,78 @@ class LinkedList {
 
     at(index) {
         var node = this._head;
-        for (var i = 0; i < index; i++) {
+        for (var i = 0; i < this.length; i++) {
+            if (i == index) return node.data;
             node = node.next;
         }
-        return node;
     }
 
     insertAt(index, data) {
         var node = this._head;
-        for (var i = 0; i < this._length; i++) {
+        for (var i = 0; i < this.length; i++) {
             if (i == index) {
                 node.data = data
             }
             node = node.next;
         }
     }
-}
 
-isEmpty() {
-    if (this._length = 0) {
-        return true;
-    } else {
-        return false;
-    }
-}
-
-clear() {
-    this._length = 0;
-    this._head = null;
-    this._tail = null;
-}
-
-deleteAt(index) {
-    var node = this._head;
-    var befNode;
-    var delNode;
-    var aftNode;
-    if (index == 0) {
-        this._head = node.next;
-        if (!this._head) {
-            this._head.prev = null;
-            return;
+    isEmpty() {
+        if (this.length == 0) {
+            return true;
         } else {
-            this._tail = null;
-            return;
+            return false;
         }
     }
-    if (index == this._length - 1) {
-        this._tail = this._tail.prev;
-        this._tail.next = null;
-        return;
-    }
-    for (var i = 0; i < this._length; i++) {
 
-        if (i == index) {
-            befNode = node.prev;
-            delNode = node;
-            aftNode = node.next;
-            befNode.next = aftNode;
-            aftNode.prev = befNode;
-            this._length--;
-            return;
+    clear() {
+        var node = this._head;
+        for (var i = 0; i < this.length; i++) {
+            node.data = null;
+            node = node.next;
         }
-        node = node.next;
+        this.next = 0;
+        this.prev = 0;
+        this.length = 0;
     }
-}
 
-reverse() {
-    var node = this._tail;
-    var prevLength = this._length;
-    for (var i = 0; i < prevLength; i++) {
-        this.append(node.data);
-        node = node.prev;
-        this.deleteAt((-(i - prevLength)) - 1);
+    deleteAt(index) {
+        var arr = [];
+        var node = this._head;
+        var j = 0;
+        for (var i = 0; i < this.length; i++) {
+            if (i != index) {
+                arr[j] = node.data;
+                j++;
+            }
+            node = node.next;
+        }
+        this.clear();
+        for (var i = 0; i < arr.length; i++) {
+            this.append(arr[i])
+        }
     }
-}
 
-indexOf(data) {
-    var node = this._head;
-    for (var i = 0; i < this._length; i++) {
-        if (data == node.data) return i;
-        node = node.next;
+    reverse() {
+        var node = this._tail;
+        var prevLength = this.length;
+        for (var i = 0; i < prevLength; i++) {
+            this.append(node.data);
+            node = node.prev;
+        }
+        for (var i = 0; i < prevLength; i++) {
+            this.deleteAt(0);
+        }
     }
-    return -1;
-}
+
+    indexOf(data) {
+        var node = this._head;
+        for (var i = 0; i < this.length; i++) {
+            if (data == node.data) return i;
+            node = node.next;
+        }
+        return -1;
+    }
 }
 
 module.exports = LinkedList;
