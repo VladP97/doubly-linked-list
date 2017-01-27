@@ -51,7 +51,7 @@ class LinkedList {
 
 isEmpty() {
     if (this._length = 0) {
-        return true
+        return true;
     } else {
         return false;
     }
